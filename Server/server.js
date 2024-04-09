@@ -12,11 +12,10 @@ const spotifyWebApi = new SpotifyWebApi({
   clientSecret: "7c78c9585615427aa481ac10ad013dc7",
 });
 
-
 app.post("/login", function (req, res) {
   const code = req.body.code;
   console.log(code);
-  console.log("Inside /login server side")
+  console.log("Inside /login server side");
 
   spotifyWebApi
     .authorizationCodeGrant(code)
@@ -28,44 +27,40 @@ app.post("/login", function (req, res) {
         refreshToken: data.body.refresh_token,
         expiresIn: data.body.expires_in,
       });
-      spotifyWebApi.setAccessToken(data.body['access_token']);
-      spotifyWebApi.setRefreshToken(data.body['refresh_token']);
+      spotifyWebApi.setAccessToken(data.body["access_token"]);
+      spotifyWebApi.setRefreshToken(data.body["refresh_token"]);
     })
     .catch((err) => {
       res.json({
         error: err,
       });
     });
-
-
 });
 
 app.post("/refresh", function (req, res) {
   const refreshToken = req.body.refreshToken;
 
-
-  spotifyApi.setAccessToken(data.body['access_token']);
-  spotifyApi.setRefreshToken(data.body['refresh_token']);
+  spotifyApi.setAccessToken(data.body["access_token"]);
+  spotifyApi.setRefreshToken(data.body["refresh_token"]);
 
   spotifyWebApi.refreshAccessToken().then(
-      function(data) {
-        console.log('The access token has been refreshed!');
+    function (data) {
+      console.log("The access token has been refreshed!");
 
-        // Save the access token so that it's used in future calls
-        spotifyWebApi.setAccessToken(data.body['access_token']);
-        res.json({
-                  accessToken: data.body.access_token,
-                  refreshToken: data.body.refresh_token,
-                  expiresIn: data.body.expires_in,
-                });
-      },
-      function(err) {
-        console.log('Could not refresh access token', err);
-      }
+      // Save the access token so that it's used in future calls
+      spotifyWebApi.setAccessToken(data.body["access_token"]);
+      res.json({
+        accessToken: data.body.access_token,
+        refreshToken: data.body.refresh_token,
+        expiresIn: data.body.expires_in,
+      });
+    },
+    function (err) {
+      console.log("Could not refresh access token", err);
+    }
   );
 
   // res.sendStatus(200);
-
 });
 
 app.listen(3001, function () {
